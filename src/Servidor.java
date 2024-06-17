@@ -1,20 +1,12 @@
-//java -cp "lib/gson-2.11.0.jar;bin" Servidor
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class Servidor {
     private static final int PORT = 12345;
@@ -99,12 +91,12 @@ public class Servidor {
                         case "3":
                             String tituloAlugar = (String) input.readObject();
                             boolean alugado = false;
-                            System.out.println("\nAlugando: " + tituloAlugar + "\n"); // Debug
+                            System.out.println("Tentando alugar: " + tituloAlugar); // Debug
                             for (Livro livro : livros) {
+                                System.out.println(livro.getNome() + " - Exemplares: " + livro.getExemplares()); // Debug
                                 if (livro.getNome().equalsIgnoreCase(tituloAlugar)) {
                                     if (livro.getExemplares() > 0) {
                                         livro.setExemplares(livro.getExemplares() - 1);
-                                        System.out.println(livro.getNome() + " - Exemplares: " + livro.getExemplares()); // Debug
                                         salvarLivros(); // Salva a lista de livros atualizada no arquivo
                                         carregarLivros(); // Recarrega a lista de livros do arquivo para garantir a sincronização
                                         output.writeObject("Livro alugado com sucesso!");
@@ -125,11 +117,9 @@ public class Servidor {
                         case "4":
                             String tituloDevolver = (String) input.readObject();
                             boolean devolvido = false;
-                            System.out.println("\nDevolvendo: " + tituloDevolver + "\n"); // Debug
                             for (Livro livro : livros) {
                                 if (livro.getNome().equalsIgnoreCase(tituloDevolver)) {
                                     livro.setExemplares(livro.getExemplares() + 1);
-                                    System.out.println(livro.getNome() + " - Exemplares: " + livro.getExemplares()); // Debug
                                     salvarLivros();
                                     carregarLivros(); // Recarrega a lista de livros do arquivo para garantir a sincronização
                                     output.writeObject("Livro devolvido com sucesso!");
