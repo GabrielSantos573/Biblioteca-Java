@@ -14,22 +14,27 @@ public class Cliente {
              Scanner scanner = new Scanner(System.in)
         ) {
             while (true) {
-                System.out.println("Escolha uma opção: LISTAR, CADASTRAR, ALUGAR, DEVOLVER, SAIR");
-                String comando = scanner.nextLine().toUpperCase();
-                output.writeObject(comando);
+                System.out.println("Escolha uma opção: 1-LISTAR, 2-CADASTRAR, 3-ALUGAR, 4-DEVOLVER, 5-SAIR");
+                String comando = scanner.nextLine();
 
-                if ("SAIR".equals(comando)) {
+                if ("5".equals(comando)) {
+                    output.writeObject(comando);
+                    output.flush();
                     break;
                 }
 
+                output.writeObject(comando);
+                output.flush();  // Ensure all data is sent before reading response
+
                 switch (comando) {
-                    case "LISTAR":
+                    case "1":
+                        @SuppressWarnings("unchecked")
                         List<Livro> livros = (List<Livro>) input.readObject();
                         for (Livro livro : livros) {
                             System.out.println(livro);
                         }
                         break;
-                    case "CADASTRAR":
+                    case "2":
                         System.out.print("Autor: ");
                         String autor = scanner.nextLine();
                         System.out.print("Nome: ");
@@ -41,18 +46,21 @@ public class Cliente {
 
                         Livro novoLivro = new Livro(autor, nome, genero, exemplares);
                         output.writeObject(novoLivro);
-                        System.out.println(input.readObject());
+                        output.flush();
+                        System.out.println(input.readObject()); // Mensagem de confirmação
                         break;
-                    case "ALUGAR":
+                    case "3":
                         System.out.print("Nome do livro para alugar: ");
                         String tituloAlugar = scanner.nextLine();
                         output.writeObject(tituloAlugar);
+                        output.flush();
                         System.out.println(input.readObject());
                         break;
-                    case "DEVOLVER":
+                    case "4":
                         System.out.print("Nome do livro para devolver: ");
                         String tituloDevolver = scanner.nextLine();
                         output.writeObject(tituloDevolver);
+                        output.flush();
                         System.out.println(input.readObject());
                         break;
                     default:
