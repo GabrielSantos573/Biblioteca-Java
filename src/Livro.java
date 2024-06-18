@@ -13,6 +13,7 @@ public class Livro implements Serializable {
         this.exemplares = exemplares;
     }
 
+    // Getters e Setters
     public String getAutor() {
         return autor;
     }
@@ -47,12 +48,11 @@ public class Livro implements Serializable {
 
     @Override
     public String toString() {
-        return "\nLivro{" +
+        return "Livro{" +
                 "autor='" + autor + '\'' +
                 ", nome='" + nome + '\'' +
                 ", genero='" + genero + '\'' +
                 ", exemplares=" + exemplares +
                 '}';
     }
-
 }

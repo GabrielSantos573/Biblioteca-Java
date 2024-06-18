@@ -1,4 +1,8 @@
-import java.io.*;
+//java -cp "lib/gson-2.11.0.jar;bin" Cliente
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;

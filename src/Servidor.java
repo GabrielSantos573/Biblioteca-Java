@@ -1,12 +1,21 @@
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+//java -cp "lib/gson-2.11.0.jar;bin" Servidor
+//javac -cp "lib/gson-2.11.0.jar" -d bin src/*.java
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class Servidor {
     private static final int PORT = 12345;
@@ -91,9 +100,8 @@ public class Servidor {
                         case "3":
                             String tituloAlugar = (String) input.readObject();
                             boolean alugado = false;
-                            System.out.println("Tentando alugar: " + tituloAlugar); // Debug
+                            System.out.println("\nTentando alugar: " + tituloAlugar); // Debug
                             for (Livro livro : livros) {
-                                System.out.println(livro.getNome() + " - Exemplares: " + livro.getExemplares()); // Debug
                                 if (livro.getNome().equalsIgnoreCase(tituloAlugar)) {
                                     if (livro.getExemplares() > 0) {
                                         livro.setExemplares(livro.getExemplares() - 1);
@@ -101,6 +109,7 @@ public class Servidor {
                                         carregarLivros(); // Recarrega a lista de livros do arquivo para garantir a sincronização
                                         output.writeObject("Livro alugado com sucesso!");
                                         alugado = true;
+                                        System.out.println(livro.getNome() + " - Exemplares: " + livro.getExemplares()); // Debug
                                         break;
                                     } else {
                                         output.writeObject("Não há exemplares disponíveis para aluguel.");
